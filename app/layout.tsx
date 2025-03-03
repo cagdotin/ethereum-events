@@ -25,9 +25,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased mx-4`}
       >
-        {children}
+        <div className="flex flex-col min-h-screen bg-grid">
+          <header className="flex items-center justify-between mt-6 container mx-auto bg-bg">
+            <div className="flex items-center justify-between px-4 py-4 w-full border h-24">
+              <h1 className="text-lg font-bold">eevents</h1>
+              {/* <nav className="text-right font-mono text-sm ">
+                <div>conferences</div>
+                <div>meetups</div>
+                <div>starred</div>
+              </nav> */}
+            </div>
+          </header>
+          <main className="container mx-auto mb-12">{children}</main>
+        </div>
       </body>
     </html>
   );
