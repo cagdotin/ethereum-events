@@ -8,6 +8,7 @@ import { Calendar, ExternalLink, Globe, MapPin } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Badge } from "./ui/badge";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const formatDate = (date: string) => {
   const options: Intl.DateTimeFormatOptions = {
@@ -35,11 +36,30 @@ const isInMonths = (date: string, months: number[]) => {
 };
 
 export function Events() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const c = searchParams.get("c");
+  const m = searchParams.get("m");
+
   const [continents, setContinents] = useState<string[]>([]);
   const [events, setEvents] = useState<typeof events_raw>(events_raw);
   const [months, setMonths] = useState<number[]>([]);
 
   useEffect(() => {
+    if (c) setContinents(c.split(","));
+    if (m) setMonths(m.split(",").map(Number));
+  }, [c, m]);
+
+  useEffect(() => {
+    const updateRoute = () => {
+      const params: { c?: string; m?: string } = {};
+      if (continents.length > 0) params.c = continents.join(",");
+      if (months.length > 0) params.m = months.join(",");
+
+      router.push(`/?${new URLSearchParams(params).toString()}`);
+    };
+
     const filteredEvents = events_raw
       .filter((event) => {
         let show = true;
@@ -64,8 +84,10 @@ export function Events() {
       });
 
     setEvents(filteredEvents);
-  }, [continents, months]);
+    updateRoute();
+  }, [continents, months, router]);
 
+  // Filter events based on if there are any continents selected
   // Filter events based on if there are any continents selected
   const canReset = continents.length > 0 || months.length > 0;
 
