@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,7 +40,9 @@ export default function RootLayout({
               </nav> */}
             </div>
           </header>
-          <main className="container mx-auto mb-12">{children}</main>
+          <main className="container mx-auto mb-12">
+            <Suspense>{children}</Suspense>
+          </main>
         </div>
         <Analytics />
       </body>

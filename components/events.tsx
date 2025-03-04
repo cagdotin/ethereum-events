@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -52,14 +51,6 @@ export function Events() {
   }, [c, m]);
 
   useEffect(() => {
-    const updateRoute = () => {
-      const params: { c?: string; m?: string } = {};
-      if (continents.length > 0) params.c = continents.join(",");
-      if (months.length > 0) params.m = months.join(",");
-
-      router.push(`/?${new URLSearchParams(params).toString()}`);
-    };
-
     const filteredEvents = events_raw
       .filter((event) => {
         let show = true;
@@ -84,7 +75,11 @@ export function Events() {
       });
 
     setEvents(filteredEvents);
-    updateRoute();
+    const params: { c?: string; m?: string } = {};
+    if (continents.length > 0) params.c = continents.join(",");
+    if (months.length > 0) params.m = months.join(",");
+
+    router.push(`/?${new URLSearchParams(params).toString()}`);
   }, [continents, months, router]);
 
   // Filter events based on if there are any continents selected
